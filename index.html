@@ -27,14 +27,27 @@
             displayData();
         }
         
-        function setWeeklyCalorieGoal() {
+        function setWeeklyGoals() {
             let calorieGoal = document.getElementById("calorieGoalInput").value;
-            if (!calorieGoal) {
-                alert("Please enter a weekly calorie goal.");
+            let proteinGoal = document.getElementById("proteinGoalInput").value;
+            let fatsGoal = document.getElementById("fatsGoalInput").value;
+            let carbsGoal = document.getElementById("carbsGoalInput").value;
+            
+            if (!calorieGoal || !proteinGoal || !fatsGoal || !carbsGoal) {
+                alert("Please enter all weekly goals.");
                 return;
             }
-            localStorage.setItem("weeklyCalorieGoal", calorieGoal);
-            document.getElementById("weeklyCalorieGoalDisplay").innerText = `Weekly Calorie Goal: ${calorieGoal} kcal`;
+            
+            let goals = { calories: calorieGoal, protein: proteinGoal, fats: fatsGoal, carbs: carbsGoal };
+            localStorage.setItem("weeklyGoals", JSON.stringify(goals));
+            displayWeeklyGoals();
+        }
+        
+        function displayWeeklyGoals() {
+            let savedGoals = JSON.parse(localStorage.getItem("weeklyGoals"));
+            if (savedGoals) {
+                document.getElementById("weeklyGoalsDisplay").innerText = `Weekly Goals - Calories: ${savedGoals.calories} kcal, Protein: ${savedGoals.protein}g, Fats: ${savedGoals.fats}g, Carbs: ${savedGoals.carbs}g`;
+            }
         }
         
         function displayData() {
@@ -54,11 +67,7 @@
             
             calculateAverages(trackerData);
             calculateWeightTrend(trackerData);
-            
-            let savedCalorieGoal = localStorage.getItem("weeklyCalorieGoal");
-            if (savedCalorieGoal) {
-                document.getElementById("weeklyCalorieGoalDisplay").innerText = `Weekly Calorie Goal: ${savedCalorieGoal} kcal`;
-            }
+            displayWeeklyGoals();
         }
         
         function calculateAverages(data) {
@@ -79,23 +88,18 @@
             document.getElementById("weightTrend").innerText = `Weight Change Over Last 7 Days: ${weightChange.toFixed(2)} lbs`;
         }
         
-        function exportToSheets() {
-            let trackerData = JSON.parse(localStorage.getItem("trackerData")) || [];
-            let csvContent = "data:text/csv;charset=utf-8,Date,Weight,Calories,Protein,Fats,Carbs\n" + 
-                trackerData.map(e => `${e.date},${e.weight},${e.calories},${e.protein},${e.fats},${e.carbs}`).join("\n");
-            
-            let encodedUri = encodeURI(csvContent);
-            let link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "tracker_data.csv");
-            document.body.appendChild(link);
-            link.click();
-        }
-        
         window.onload = displayData;
     </script>
 </head>
 <body>
+    <h2>Weekly Goals</h2>
+    <input type="number" id="calorieGoalInput" placeholder="Weekly calorie goal" step="1">
+    <input type="number" id="proteinGoalInput" placeholder="Weekly protein goal (g)" step="0.1">
+    <input type="number" id="fatsGoalInput" placeholder="Weekly fats goal (g)" step="0.1">
+    <input type="number" id="carbsGoalInput" placeholder="Weekly carbs goal (g)" step="0.1">
+    <button onclick="setWeeklyGoals()">Set Weekly Goals</button>
+    <h3 id="weeklyGoalsDisplay">Weekly Goals: N/A</h3>
+    
     <h2>Daily Weight & Calorie Tracker</h2>
     <input type="number" id="weightInput" placeholder="Enter weight" step="0.1"><br>
     <input type="number" id="caloriesInput" placeholder="Enter calories" step="1"><br>
@@ -104,10 +108,6 @@
     <input type="number" id="carbsInput" placeholder="Enter carbs (g)" step="0.1"><br>
     <button onclick="saveData()">Save</button>
     <br><br>
-    <input type="number" id="calorieGoalInput" placeholder="Enter weekly calorie goal" step="1">
-    <button onclick="setWeeklyCalorieGoal()">Set Weekly Goal</button>
-    <h3 id="weeklyCalorieGoalDisplay">Weekly Calorie Goal: N/A</h3>
-    <button onclick="exportToSheets()">Export to CSV</button>
     <h3 id="weeklyAvg">7-Day Avg Calories: N/A, 7-Day Avg Weight: N/A</h3>
     <h3 id="weightTrend">Weight Change Over Last 7 Days: N/A</h3>
     <table id="dataTable" border="1">
