@@ -1,7 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weight & Calorie Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        h3 {
+            text-align: center;
+            color: #666;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            color: #555;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .goal-container {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e2f3e2;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .goal-container input {
+            width: 20%;
+            margin: 5px;
+        }
+        .goal-container button {
+            width: 20%;
+        }
+    </style>
     <script>
         function saveData() {
             let weight = document.getElementById("weightInput").value;
@@ -92,26 +179,50 @@
     </script>
 </head>
 <body>
-    <h2>Weekly Goals</h2>
-    <input type="number" id="calorieGoalInput" placeholder="Weekly calorie goal" step="1">
-    <input type="number" id="proteinGoalInput" placeholder="Weekly protein goal (g)" step="0.1">
-    <input type="number" id="fatsGoalInput" placeholder="Weekly fats goal (g)" step="0.1">
-    <input type="number" id="carbsGoalInput" placeholder="Weekly carbs goal (g)" step="0.1">
-    <button onclick="setWeeklyGoals()">Set Weekly Goals</button>
-    <h3 id="weeklyGoalsDisplay">Weekly Goals: N/A</h3>
-    
-    <h2>Daily Weight & Calorie Tracker</h2>
-    <input type="number" id="weightInput" placeholder="Enter weight" step="0.1"><br>
-    <input type="number" id="caloriesInput" placeholder="Enter calories" step="1"><br>
-    <input type="number" id="proteinInput" placeholder="Enter protein (g)" step="0.1"><br>
-    <input type="number" id="fatsInput" placeholder="Enter fats (g)" step="0.1"><br>
-    <input type="number" id="carbsInput" placeholder="Enter carbs (g)" step="0.1"><br>
-    <button onclick="saveData()">Save</button>
-    <br><br>
-    <h3 id="weeklyAvg">7-Day Avg Calories: N/A, 7-Day Avg Weight: N/A</h3>
-    <h3 id="weightTrend">Weight Change Over Last 7 Days: N/A</h3>
-    <table id="dataTable" border="1">
-        <tr><th>Date</th><th>Weight</th><th>Calories</th><th>Protein</th><th>Fats</th><th>Carbs</th></tr>
-    </table>
+    <div class="container">
+        <h2>Weekly Goals</h2>
+        <div class="goal-container">
+            <label for="calorieGoalInput">Weekly Calorie Goal</label>
+            <input type="number" id="calorieGoalInput" placeholder="Weekly calorie goal" step="1">
+            <label for="proteinGoalInput">Weekly Protein Goal (g)</label>
+            <input type="number" id="proteinGoalInput" placeholder="Weekly protein goal (g)" step="0.1">
+            <label for="fatsGoalInput">Weekly Fats Goal (g)</label>
+            <input type="number" id="fatsGoalInput" placeholder="Weekly fats goal (g)" step="0.1">
+            <label for="carbsGoalInput">Weekly Carbs Goal (g)</label>
+            <input type="number" id="carbsGoalInput" placeholder="Weekly carbs goal (g)" step="0.1">
+            <button class="button" onclick="setWeeklyGoals()">Set Weekly Goals</button>
+        </div>
+        <h3 id="weeklyGoalsDisplay">Weekly Goals: N/A</h3>
+        
+        <h2>Daily Weight & Calorie Tracker</h2>
+        <div class="input-group">
+            <label for="weightInput">Weight</label>
+            <input type="number" id="weightInput" placeholder="Enter weight" step="0.1">
+        </div>
+        <div class="input-group">
+            <label for="caloriesInput">Calories</label>
+            <input type="number" id="caloriesInput" placeholder="Enter calories" step="1">
+        </div>
+        <div class="input-group">
+            <label for="proteinInput">Protein (g)</label>
+            <input type="number" id="proteinInput" placeholder="Enter protein (g)" step="0.1">
+        </div>
+        <div class="input-group">
+            <label for="fatsInput">Fats (g)</label>
+            <input type="number" id="fatsInput" placeholder="Enter fats (g)" step="0.1">
+        </div>
+        <div class="input-group">
+            <label for="carbsInput">Carbs (g)</label>
+            <input type="number" id="carbsInput" placeholder="Enter carbs (g)" step="0.1">
+        </div>
+        <button class="button" onclick="saveData()">Save</button>
+        
+        <h3 id="weeklyAvg">7-Day Avg Calories: N/A, 7-Day Avg Weight: N/A</h3>
+        <h3 id="weightTrend">Weight Change Over Last 7 Days: N/A</h3>
+        
+        <table id="dataTable">
+            <tr><th>Date</th><th>Weight</th><th>Calories</th><th>Protein</th><th>Fats</th><th>Carbs</th></tr>
+        </table>
+    </div>
 </body>
 </html>
